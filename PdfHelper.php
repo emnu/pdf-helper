@@ -43,11 +43,11 @@ class PdfHelper {
 
 	protected $title = 'CakePHP PDF Helper';
 
-	protected $subject = 'Air Selangor Receipt/Bill';
+	protected $subject = 'PDF Helper';
 
-	protected $keywords = 'Air Selangor, CakePHP, Receipt, Bill';
+	protected $keywords = 'PDF Helper, TCPDF, FPDI';
 
-	protected $template = 'page_syabas.pdf';
+	protected $template = 'template.pdf';
 
 	protected $font = array(
 			'family' => 'courier',
