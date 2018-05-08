@@ -170,13 +170,21 @@ class PdfHelper extends Helper {
 	* @return void
 	*/
 	public function write($text, $options = array()) {
-		$defaults = array('span'=>1, 'textColor'=>array(0,0,0), 'style'=>'', 'size'=>'', 'family'=>'', 'border'=>0, 'ln'=>0, 'align'=>'L', 'fill'=>false, 'link'=>'', 'stretch'=>0, 'ignore_min_height'=>false, 'calign'=>'T', 'valign'=>'M', 'multi'=>false, 'x'=>'', 'y'=>'', 'reseth'=>true, 'stretch'=>0, 'ishtml'=>false, 'autopadding'=>true, 'maxh'=>0, 'fitcell'=>false);
+		$defaults = array('span'=>1, 'textColor'=>array(0,0,0), 'style'=>'', 'size'=>'', 'family'=>'', 'border'=>0, 'ln'=>0, 'align'=>'L', 'fill'=>false, 'link'=>'', 'stretch'=>0, 'ignore_min_height'=>false, 'calign'=>'T', 'valign'=>'M', 'multi'=>false, 'x'=>'', 'y'=>'', 'reseth'=>true, 'stretch'=>0, 'ishtml'=>false, 'autopadding'=>true, 'maxh'=>0, 'fitcell'=>false, 'fillColor'=>array(215, 215, 215), 'padding'=>array(0,0,0,0));
 		$options = array_merge($defaults, $options);
 
 		$this->cells += $options['span'];
+		
+		if($options['fill']) {
+			list($colorR, $colorB, $colorG) = $options['fillColor'];
+			$this->pdf->SetFillColor($colorR, $colorB, $colorG);
+		}
 
 		list($colorR, $colorB, $colorG) = $options['textColor'];
 		$this->pdf->SetTextColor($colorR, $colorB, $colorG);
+		
+		list($paddingL, $paddingT, $paddingR, $paddingB) = $options['padding'];
+		$this->pdf->setCellPaddings( $paddingL, $paddingT, $paddingR, $paddingB);
 
 		$family = (empty($options['family']))?$this->font['family']:$options['family'];
 		$size = (empty($options['size']))?$this->font['size']:$options['size'];
@@ -246,6 +254,19 @@ class PdfHelper extends Helper {
 		$this->line($column_from, $column_to, $styles);
 		$this->line($column_from, $column_to, $styles, array('y'=>0.5));
 	}
+	
+	/**
+	* draw a bold line
+	*
+	* @param integer $column_from start column number
+	* @param integer $column_to end column number
+	* @return void
+	*/
+	public function lineBold($column_from = 0, $column_to = 0, $styles = array()) {
+		$styles['width'] = '0.5';
+		$this->line($column_from, $column_to, $styles);
+		$this->line($column_from, $column_to, $styles);
+	}
 
 	/**
 	* set document pointer to new line
@@ -256,6 +277,17 @@ class PdfHelper extends Helper {
 		// $this->write('', array('span'=>$this->columns));
 		$this->pdf->Ln();
 		$this->cells = 0;
+	}
+	
+	/**
+	* add image to document
+	*
+	* @return void
+	*/
+	public function image($file, $options = array()) {
+		$defaults = array('x'=>'', 'y'=>'', 'w'=>0, 'h'=>0, 'type'=>'', 'link'=>'', 'align'=>'', 'resize'=>false, 'dpi'=>300, 'palign'=>'', 'ismask'=>false, 'imgmask'=>false, 'border'=>0, 'fitbox'=>false, 'hidden'=>false, 'fitonpage'=>false);
+		$options = array_merge($defaults, $options);
+		$this->pdf->Image($file, $options['x'], $options['y'], $options['w'], $options['h'], $options['type'], $options['link'], $options['align'], $options['resize'], $options['dpi'], $options['palign'], $options['ismask'], $options['imgmask'], $options['border'], $options['fitbox'], $options['hidden'], $options['fitonpage']);
 	}
 
 	/**
