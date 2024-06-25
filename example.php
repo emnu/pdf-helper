@@ -10,6 +10,7 @@ $pdf->setOptions(array(
 		'pageNum' => true,
 		'pageNumFormat' => '#P of #T',
 	));
+$pdf->setMargins(10.5, 10.5, 10.5, 10.5); // left, top, right, bottom, set to null if wanted to use default value
 
 $pdf->add();
 
