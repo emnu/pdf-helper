@@ -120,6 +120,26 @@ class PdfHelper {
 	}
 
 	/**
+	* Override default margin settings
+	*
+	* @return void
+	*/
+	public function setMargins($left=null, $top=null, $right=null, $bottom=null) {
+		if(is_numeric($left)) {
+			$this->pdf->SetLeftMargin($left);
+		}
+		if(is_numeric($top)) {
+			$this->pdf->SetTopMargin($top);
+		}
+		if(is_numeric($right)) {
+			$this->pdf->SetRightMargin($right);
+		}
+		if(is_numeric($bottom)) {
+			$this->pdf->SetAutoPageBreak(true, $bottom);
+		}
+	}
+
+	/**
 	* Add new page
 	*
 	* @return void
